@@ -10,8 +10,8 @@ package calculator;
  * @author root
  */
 public class Calculator {
-    private Integer num1;
-    private Integer num2;
+    private Float num1;
+    private Float num2;
     private String operator = null;
     
     public Calculator(String input){
@@ -19,7 +19,7 @@ public class Calculator {
         
         if(input.contains("+")){
             operator = "+";
-            param = input.split("+");
+            param = input.split("\\+");
         }
         else if(input.contains("-")){
             operator = "-";
@@ -27,7 +27,7 @@ public class Calculator {
         }
         else if(input.contains("*")){
             operator = "*";
-            param = input.split("*");
+            param = input.split("\\*");
         }
         else if(input.contains("/")){
             operator = "/";
@@ -35,15 +35,17 @@ public class Calculator {
         }
         
         if(param != null){
-            num1 = Integer.parseInt(param[0].trim());
-            num2 = Integer.parseInt(param[1].trim());
+            num1 = Float.parseFloat(param[0].trim());
+            num2 = Float.parseFloat(param[1].trim());
         }
         else{
-            num1 = Integer.parseInt(input);
+            num1 = Float.parseFloat(input);
         }
     }
     
     public String calc(){
+        
+        Float res = 0f;
         
         if(operator == null){
             return num1.toString();
@@ -52,15 +54,19 @@ public class Calculator {
         else{
             switch(operator){
                 case "+":
-                    return String.valueOf(num1+num2);
+                    res = num1+num2;
                 case "-":
-                    return String.valueOf(num1-num2);
+                    res = num1-num2;
                 case "*":
-                    return String.valueOf(num1*num2);
+                    res = num1*num2;
                 case "/":
-                    return String.valueOf(num1/num2);
+                    res = num1/num2;
             }
+            if(res.floatValue() == (float)Math.round(res)){
+                return String.valueOf(Math.round(res));
+            }
+            else
+                return String.valueOf(res);
         }
-        return null;
     }
 }
