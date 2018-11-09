@@ -5,12 +5,19 @@
  */
 package calculator;
 
+import java.util.Arrays;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import mockit.Deencapsulation;
+import mockit.Injectable;
+import mockit.Mocked;
+import mockit.Tested;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -18,21 +25,24 @@ import static org.junit.Assert.*;
  */
 public class CalculatorTest {
     
+    @Mocked 
+    Calculator calculatorInstance = new Calculator();
+    
     public CalculatorTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -42,8 +52,18 @@ public class CalculatorTest {
      */
     @Test
     public void testCalc() {
-        Calculator calc = new Calculator("123+234");
-        assertEquals("357",calc.calc());
+        String input = "(123+234)*789-123/123";
+        calculatorInstance = new Calculator(input);
+        String res = calculatorInstance.calc();
+        assertEquals(res,"281672");
     }
     
+    @Test
+    public void testInfixToPostfix(){
+        String[] input = {"(", "123", "+", "234", ")", "*", "789", "-", "123", "/", "123"};
+        
+        String[] expected = {"123","234","+","789","*","123","123","/","-"};
+        String[] actualResult = calculatorInstance.infixToPostfix(input);
+        assertArrayEquals(expected,actualResult);
+    }
 }
